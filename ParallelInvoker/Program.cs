@@ -2,9 +2,17 @@
 using System.Net;
 
 string _theEbook = "";
-GetBook();
 Console.WriteLine("Downloading...");
+await GetBookAsync();
 Console.ReadLine();
+
+async Task GetBookAsync()
+{
+    HttpClient client = new HttpClient();
+    _theEbook = await client.GetStringAsync("http://www.gutenberg.org/files/2413/2413-0.txt");
+    Console.WriteLine("Download completed");
+    GetStats();
+}
 
 void GetBook()
 {
@@ -40,7 +48,7 @@ string FindLongestWord(string[] words)
 void GetStats()
 {
     string[] words = _theEbook.Split(
-        new char[] {' ', '\u000A', ',', '.', ';', ':', '-', '?', '/'}, 
+        new char[] {' ', '\u000A', ',', '.', ';', ':', '-', '?', '/', '!'}, 
         StringSplitOptions.RemoveEmptyEntries);
     string[] tenMostCommon = null;
     string biggestWord = string.Empty;
